@@ -1,0 +1,77 @@
+---
+title: "Risky Customers"
+output: prisky_document
+date: '2023-12-02'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(ggplot2)
+library(gridExtra)
+```
+
+```{r}
+risky <- read.csv("At risk customers data.csv")
+champion <- read.csv("Champion customers data.csv")
+```
+
+```{r}
+library(grid)
+
+risky1 <- ggplot(risky, aes(x = Region, fill = Gender)) + 
+  geom_bar(position = "dodge") +
+  labs(title = "Risky Customers",
+         x = "",
+         y = "Frequency") + 
+  guides(fill = "none") + 
+  theme_bw() +
+    theme(axis.text.x = element_text(size = 8, angle = 90, vjust = 0.5, hjust = 1))
+
+
+
+champion1 <- ggplot(champion, aes(x = Region, fill = Gender)) + 
+  geom_bar(position = "dodge") +
+  labs(title = "Champion Customers",
+         x = "",
+         y = "") + 
+  theme_bw() + 
+      theme(axis.text.x = element_text(size = 8, angle = 90, vjust = 0.5, hjust = 1))
+
+
+grid.arrange(
+  arrangeGrob(risky1, champion1, ncol = 2, widths = c(44, 56)),
+  top = textGrob("Distribution of Regions by Gender", gp = gpar(fontsize = 15)), 
+  bottom = textGrob("Region", gp = gpar(fontsize = 12))
+  )
+```
+According to the plot of two different segments of the customers, the number of female and male customers are not significantly different within each group. In addition, the customers in both groups are distributed in the regions evenly. 
+
+```{r, warning=FALSE}
+risky2 <- ggplot(risky, aes(y = Salary, x = Gender, fill = Gender)) + 
+  geom_boxplot() +
+  stat_summary(fun = mean, shape = 18, size = 1, color = "white", position = position_dodge(width = 0.75))+
+  labs(title = "Risky Customers",
+       x = "",
+       y = "Salary($)") + 
+  theme_bw() +
+  guides(fill = "none")
+
+champion2 <- ggplot(champion, aes(y = Salary, x = Gender, fill = Gender)) + 
+  geom_boxplot() +
+  stat_summary(fun = mean, shape = 18, size = 1, color = "white", position = position_dodge(width = 0.75))+
+  labs(title = "Champion Customer",
+       x = "",
+       y = "") + 
+  theme_bw() +
+  guides(fill = "none")
+
+grid.arrange(
+  arrangeGrob(risky2, champion2, ncol = 2, widths = c(44, 56)),
+  top = textGrob("Distribution of Salary by Gender", gp = gpar(fontsize = 15)), 
+  bottom = textGrob("Gender", gp = gpar(fontsize = 12))
+  )
+
+```
+The plot shows the distribution of the salaries for female and male risky and champion customers. We can see that Champion customers have higher median and mean salaries than Risky customers. 
+

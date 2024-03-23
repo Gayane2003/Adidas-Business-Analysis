@@ -1,0 +1,105 @@
+---
+title: "BA project plots"
+author: "x"
+date: "2023-12-01"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r, warning = FALSE}
+library(readxl)
+library(ggplot2)
+
+data <- read_excel("project data.xlsx", 'Sheet2')
+head(data)
+
+```
+
+```{r}
+
+
+library(ggplot2)
+
+# Boxplot for Unit Price by Gender
+ggplot(data, aes(x = Gender, y = `Unit price`, fill = Gender)) +
+    geom_boxplot() +
+    labs(title = "Unit Price Distribution by Gender", x = "Gender", y = "Unit Price")
+
+```
+
+
+```{r}
+library(ggplot2)
+
+# Stacked bar chart of Quantity by Product Season
+ggplot(data, aes(fill = ProductSeason, y = Quantity, x = Gender)) +
+    geom_bar(position = "stack", stat = "identity") +
+    labs(title = "Quantity of Purchases by Gender and Product Season", x = "Gender", y = "Quantity")
+
+```
+
+```{r}
+
+library(ggplot2)
+library(reshape2)
+
+# Assuming df is your dataframe
+numeric_vars <- data[, sapply(data, is.numeric)]
+cor_matrix <- cor(numeric_vars, use = "complete.obs")
+melted_cor_matrix <- melt(cor_matrix)
+
+ggplot(melted_cor_matrix, aes(Var1, Var2, fill = value)) +
+    geom_tile() +
+    scale_fill_gradient2(low = "darkblue", high = "red", midpoint = 0.20) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+      labs(title = " ", x = " ", y = " ")
+
+  
+
+
+```
+
+
+```{r}
+ggplot(df, aes(x = factor(ByCash), y = Age, fill = factor(ByCash))) +
+    geom_boxplot() +
+    labs(title = "Age Distribution by Payment Method", x = "Payment Method (1 = Cash, 0 = Non-Cash)", y = "Age")
+
+```
+
+```{r}
+
+ggplot(data, aes(x = ProductSeason, y = Quantity, fill = Gender)) +
+    geom_bar(stat = "identity", position = "stack") +
+    ggtitle("Stacked Bar Chart: Product Season, Quantity, and Gender")
+
+
+```
+```{r}
+
+
+ggplot(data, aes(x = `Unit price`, y = Quantity)) +
+    geom_point() +
+    geom_smooth(method = "lm") +
+    labs(title = "Price vs Quantity Sold", x = "Unit Price", y = "Quantity Sold") +
+    theme_minimal()
+
+```
+
+
+
+```{r}
+
+
+ggplot(data, aes(x=Region, y=`Unit price`, fill=Gender)) +
+  geom_boxplot()
+
+
+```
+
+
